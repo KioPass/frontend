@@ -315,7 +315,7 @@ class _BuyerHomeScreenState extends State<BuyerHomeScreen> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 0.9,
+                  childAspectRatio: 0.8,
                 ),
                 itemCount: _filteredProducts.length,
                 itemBuilder: (_, i) => _buildProductCard(_filteredProducts[i]),
@@ -525,18 +525,40 @@ class _BuyerHomeScreenState extends State<BuyerHomeScreen> {
                     ],
                   ),
                 ),
-                Expanded(
-                  flex: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(12, 10, 12, 10),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(product.name, style: const TextStyle(fontFamily: 'Pretendard', color: KColors.navy, fontSize: 13, fontWeight: FontWeight.w700, letterSpacing: -0.2), maxLines: 2, overflow: TextOverflow.ellipsis),
-                        Text(product.price, style: const TextStyle(fontFamily: 'Pretendard', color: Color(0xFFFF6B4A), fontSize: 15, fontWeight: FontWeight.w900, letterSpacing: -0.5)),
-                      ],
-                    ),
+                Container(
+                  height: 80,
+                  padding: const EdgeInsets.fromLTRB(12, 8, 12, 8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          product.name,
+                          style: const TextStyle(
+                            fontFamily: 'Pretendard',
+                            color: KColors.navy,
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.2,
+                            height: 1.2,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        product.price,
+                        style: const TextStyle(
+                            fontFamily: 'Pretendard',
+                            color: Color(0xFFFF6B4A),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w900,
+                            letterSpacing: -0.5
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -1431,7 +1453,7 @@ class _BuyerProductGridState extends State<BuyerProductGrid> {
                   crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 0.9,
+                  childAspectRatio: 0.7,
                 ),
                 itemCount: _filteredProducts.length,
                 itemBuilder: (_, i) => _buildProductCard(_filteredProducts[i]),

@@ -321,46 +321,48 @@ class _BuyerBody extends StatelessWidget {
     if (selectedStore == null) {
       return SizedBox.expand(
         child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 40),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Container(
-                  width: 80, height: 80,
-                  decoration: BoxDecoration(
-                    color: cs.onSurface.withValues(alpha: 0.06),
-                    borderRadius: BorderRadius.circular(24),
-                  ),
-                  child: Icon(Icons.qr_code_2_rounded, color: cs.onSurface.withValues(alpha: 0.3), size: 44),
-                ),
-                const SizedBox(height: 20),
-                Text('매장을 선택해주세요', style: tt.titleLarge, textAlign: TextAlign.center),
-                const SizedBox(height: 8),
-                Text(
-                  '상단의 매장 이름이나 아래 버튼을 눌러\n쇼핑할 매장을 선택하세요',
-                  style: tt.bodyMedium?.copyWith(height: 1.6),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 32),
-                SizedBox(
-                  height: 52,
-                  child: ElevatedButton(
-                    onPressed: onStoreSelect,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: KColors.primary,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
-                      padding: const EdgeInsets.symmetric(horizontal: 32),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 80, height: 80,
+                    decoration: BoxDecoration(
+                      color: cs.onSurface.withValues(alpha: 0.06),
+                      borderRadius: BorderRadius.circular(24),
                     ),
-                    child: const Text(
-                      '매장 선택하기',
-                      style: TextStyle(fontFamily: 'Pretendard', fontSize: 15, fontWeight: FontWeight.w700),
+                    child: Icon(Icons.qr_code_2_rounded, color: cs.onSurface.withValues(alpha: 0.3), size: 44),
+                  ),
+                  const SizedBox(height: 20),
+                  Text('매장을 선택해주세요', style: tt.titleLarge, textAlign: TextAlign.center),
+                  const SizedBox(height: 8),
+                  Text(
+                    '상단의 매장 이름이나 아래 버튼을 눌러\n쇼핑할 매장을 선택하세요',
+                    style: tt.bodyMedium?.copyWith(height: 1.6),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 32),
+                  SizedBox(
+                    height: 52,
+                    child: ElevatedButton(
+                      onPressed: onStoreSelect,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: KColors.primary,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(999)),
+                        padding: const EdgeInsets.symmetric(horizontal: 32),
+                      ),
+                      child: const Text(
+                        '매장 선택하기',
+                        style: TextStyle(fontFamily: 'Pretendard', fontSize: 15, fontWeight: FontWeight.w700),
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
@@ -523,7 +525,7 @@ class _StoreSelectSheetState extends State<_StoreSelectSheet> {
             )
           else
             ConstrainedBox(
-              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.4),
+              constraints: BoxConstraints(maxHeight: MediaQuery.of(context).size.height * 0.6),
               child: ListView.separated(
                 shrinkWrap: true,
                 itemCount: _nearbyStores.length,
