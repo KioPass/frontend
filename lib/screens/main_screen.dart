@@ -219,7 +219,7 @@ class _MainScreenState extends State<MainScreen> {
         if (details.primaryVelocity! > 0) _handleToggle(false);
       },
       child: Container(
-        width: 136,
+        width: 126,
         height: 34,
         padding: const EdgeInsets.all(3),
         decoration: BoxDecoration(
@@ -232,8 +232,8 @@ class _MainScreenState extends State<MainScreen> {
             AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               curve: Curves.easeInOut,
-              margin: EdgeInsets.only(left: _isSeller ? 64 : 0),
-              width: 64,
+              margin: EdgeInsets.only(left: _isSeller ? 58 : 0),
+              width: 58,
               height: 28,
               decoration: BoxDecoration(
                 color: isDark ? KColors.primary : KColors.navy,
