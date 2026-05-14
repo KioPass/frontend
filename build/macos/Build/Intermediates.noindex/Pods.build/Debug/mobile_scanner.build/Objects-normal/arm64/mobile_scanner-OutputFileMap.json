@@ -1,0 +1,29 @@
+{
+  "" : {
+    "diagnostics" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/mobile_scanner-primary.dia",
+    "emit-module-dependencies" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/mobile_scanner-primary-emit-module.d",
+    "emit-module-diagnostics" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/mobile_scanner-primary-emit-module.dia",
+    "pch" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/mobile_scanner-primary-Bridging-header.pch",
+    "swift-dependencies" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/mobile_scanner-primary.swiftdeps"
+  },
+  "/Users/gimtaeheon/.pub-cache/hosted/pub.dev/mobile_scanner-3.5.7/macos/Classes/DetectionSpeed.swift" : {
+    "const-values" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/DetectionSpeed.swiftconstvalues",
+    "dependencies" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/DetectionSpeed.d",
+    "diagnostics" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/DetectionSpeed.dia",
+    "index-unit-output-path" : "/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/DetectionSpeed.o",
+    "llvm-bc" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/DetectionSpeed.bc",
+    "object" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/DetectionSpeed.o",
+    "swift-dependencies" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/DetectionSpeed.swiftdeps",
+    "swiftmodule" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/DetectionSpeed~partial.swiftmodule"
+  },
+  "/Users/gimtaeheon/.pub-cache/hosted/pub.dev/mobile_scanner-3.5.7/macos/Classes/MobileScannerPlugin.swift" : {
+    "const-values" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/MobileScannerPlugin.swiftconstvalues",
+    "dependencies" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/MobileScannerPlugin.d",
+    "diagnostics" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/MobileScannerPlugin.dia",
+    "index-unit-output-path" : "/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/MobileScannerPlugin.o",
+    "llvm-bc" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/MobileScannerPlugin.bc",
+    "object" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/MobileScannerPlugin.o",
+    "swift-dependencies" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/MobileScannerPlugin.swiftdeps",
+    "swiftmodule" : "/Users/gimtaeheon/kiopass/build/macos/Build/Intermediates.noindex/Pods.build/Debug/mobile_scanner.build/Objects-normal/arm64/MobileScannerPlugin~partial.swiftmodule"
+  }
+}

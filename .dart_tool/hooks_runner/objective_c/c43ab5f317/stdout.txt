@@ -1,0 +1,53 @@
+Running `(cd /Users/gimtaeheon/.pub-cache/hosted/pub.dev/objective_c-9.3.0/; TMPDIR=/var/folders/2c/51fkxs957b5fb8gb423t13b00000gn/T/ PATH=/Applications/Xcode.app/Contents/SharedFrameworks/SwiftBuild.framework/Versions/A/PlugIns/SWBBuildService.bundle/Contents/PlugIns/SWBUniversalPlatformPlugin.bundle/Contents/Frameworks/SWBUniversalPlatform.framework/Resources:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/libexec:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/usr/local/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/local/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/local/bin:/opt/homebrew/opt/openjdk@21/bin:/Users/gimtaeheon/.local/bin:/Users/gimtaeheon/Public/Drop Box/flutter/bin:/Users/gimtaeheon/Library/Application Support/Code/User/globalStorage/github.copilot-chat/debugCommand:/Users/gimtaeheon/Library/Application Support/Code/User/globalStorage/github.copilot-chat/copilotCli:/Users/gimtaeheon/Public/Drop Box/flutter/bin/:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/opt/pkg/env/active/bin:/opt/pmk/env/global/bin:/Library/Apple/usr/bin HOME=/Users/gimtaeheon /Users/gimtaeheon/Public/Drop Box/flutter/bin/cache/dart-sdk/bin/dart --packages=/Users/gimtaeheon/kiopass/frontend/.dart_tool/package_config.json /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/objective_c/c43ab5f317/hook.dill --config=/Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/objective_c/c43ab5f317/input.json )`.
+INFO: 2026-05-11 10:32:29.659093: Running `/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang --version`.
+
+INFO: 2026-05-11 10:32:29.678664: Running `/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang --version`.
+
+INFO: 2026-05-11 10:32:29.693777: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.4.sdk -target arm64-apple-ios -mios-version-min=13 -c /Users/gimtaeheon/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/include/dart_api_dl.c -fpic -I src -o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/include/dart_api_dl.c.o
+INFO: 2026-05-11 10:32:29.705226: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.4.sdk -target arm64-apple-ios -mios-version-min=13 -c /Users/gimtaeheon/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c.c -fpic -I src -o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/objective_c.c.o
+INFO: 2026-05-11 10:32:29.705511: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.4.sdk -target arm64-apple-ios -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/gimtaeheon/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/input_stream_adapter.m -fpic -I src -o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/input_stream_adapter.m.o
+INFO: 2026-05-11 10:32:29.705695: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.4.sdk -target arm64-apple-ios -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/gimtaeheon/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c.m -fpic -I src -o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/objective_c.m.o
+INFO: 2026-05-11 10:32:29.705870: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.4.sdk -target arm64-apple-ios -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/gimtaeheon/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/observer.m -fpic -I src -o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/observer.m.o
+INFO: 2026-05-11 10:32:29.706042: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.4.sdk -target arm64-apple-ios -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/gimtaeheon/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/ns_number.m -fpic -I src -o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/ns_number.m.o
+INFO: 2026-05-11 10:32:29.706209: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.4.sdk -target arm64-apple-ios -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/gimtaeheon/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/protocol.m -fpic -I src -o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/protocol.m.o
+
+INFO: 2026-05-11 10:32:29.711205: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.4.sdk -target arm64-apple-ios -mios-version-min=13 -x objective-c -fobjc-arc -c /Users/gimtaeheon/.pub-cache/hosted/pub.dev/objective_c-9.3.0/src/objective_c_bindings_generated.m -fpic -I src -o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/objective_c_bindings_generated.m.o
+
+INFO: 2026-05-11 10:32:29.781982: 
+INFO: 2026-05-11 10:32:29.782107: 
+INFO: 2026-05-11 10:32:29.782150: Generated /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/include/dart_api_dl.c.o
+
+INFO: 2026-05-11 10:32:29.800307: 
+INFO: 2026-05-11 10:32:29.800374: 
+INFO: 2026-05-11 10:32:29.800421: Generated /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/objective_c.c.o
+
+INFO: 2026-05-11 10:32:29.816126: 
+INFO: 2026-05-11 10:32:29.816191: 
+INFO: 2026-05-11 10:32:29.816213: Generated /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/protocol.m.o
+INFO: 2026-05-11 10:32:29.816280: 
+INFO: 2026-05-11 10:32:29.816295: 
+INFO: 2026-05-11 10:32:29.816315: Generated /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/observer.m.o
+
+INFO: 2026-05-11 10:32:29.928111: 
+INFO: 2026-05-11 10:32:29.928163: 
+INFO: 2026-05-11 10:32:29.928185: Generated /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/objective_c.m.o
+
+INFO: 2026-05-11 10:32:29.936473: 
+INFO: 2026-05-11 10:32:29.936517: 
+INFO: 2026-05-11 10:32:29.936532: Generated /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/ns_number.m.o
+
+INFO: 2026-05-11 10:32:29.940018: 
+INFO: 2026-05-11 10:32:29.940059: 
+INFO: 2026-05-11 10:32:29.940076: Generated /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/input_stream_adapter.m.o
+
+INFO: 2026-05-11 10:32:29.979470: 
+INFO: 2026-05-11 10:32:29.979509: 
+INFO: 2026-05-11 10:32:29.979522: Generated /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/objective_c_bindings_generated.m.o
+
+INFO: 2026-05-11 10:32:29.979934: Running: /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -shared -Wl,-encryptable -undefined dynamic_lookup -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.4.sdk -target arm64-apple-ios -mios-version-min=13 /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/include/dart_api_dl.c.o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/objective_c.c.o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/input_stream_adapter.m.o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/objective_c.m.o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/observer.m.o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/ns_number.m.o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/protocol.m.o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/obj/src/objective_c_bindings_generated.m.o -o /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/objective_c.dylib
+
+INFO: 2026-05-11 10:32:30.014084: 
+INFO: 2026-05-11 10:32:30.014156: ld: warning: -undefined dynamic_lookup is deprecated on iOS
+
+INFO: 2026-05-11 10:32:30.014186: Generated /Users/gimtaeheon/kiopass/frontend/.dart_tool/hooks_runner/shared/objective_c/build/c43ab5f317/objective_c.dylib
+
