@@ -10,7 +10,7 @@ const String _tossClientKey = 'test_ck_P9BRQmyarYlBePmM9qKaVJ07KzLN';
 //   ngrok 사용시            : https://abc123.ngrok-free.app
 //   배포 서버               : https://실제서버주소
 const String kBaseUrl = 'http://43.203.72.37:8080';
-const String kTossBase = 'https://said-turbulent-striking.ngrok-free.dev';
+const String kTossBase = 'http://43.203.72.37:8080';
 
 class OAuthResult {
   final String status; // login_success | signup_success | error | cancelled
@@ -295,7 +295,6 @@ class ApiService {
 
   static Map<String, String> _headers([String? token]) => {
     'Content-Type': 'application/json',
-    'ngrok-skip-browser-warning': 'true',
     if (token != null) 'Authorization': 'Bearer $token',
   };
 
@@ -317,7 +316,7 @@ class ApiService {
       final uri = Uri.parse(result);
       return OAuthResult(
         status: uri.queryParameters['status'] ?? 'error',
-        token: uri.queryParameters['token'],
+        token: uri.queryParameters['accesstoken'] ?? uri.queryParameters['token'],
         errorCode: uri.queryParameters['code'],
       );
     } catch (_) {
@@ -697,6 +696,22 @@ class ApiService {
   }
 
   // ── 관리자 ──────────────────────────────────────────────────────────
+  // ── 도어 출입 ─────────────────────────────────────────────────────────
+  static Future<bool> verifyDoorEntry(String token, int storeId, String storeName) async {
+    try {
+      final res = await http.post(
+        Uri.parse('$kBaseUrl/api/door/verify'),
+        headers: _headers(token),
+        body: jsonEncode({'storeId': storeId, 'storeName': storeName}),
+      );
+      if (res.statusCode == 200) {
+        final body = (jsonDecode(res.body) as Map<String, dynamic>)['body'];
+        return body['open'] == true;
+      }
+    } catch (_) {}
+    return false;
+  }
+
   static Future<List<InquiryModel>> getAdminInquiries(String token) async {
     try {
       final res = await http.get(

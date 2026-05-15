@@ -592,6 +592,27 @@ class _StoreSelectSheetState extends State<_StoreSelectSheet> {
                       final idStr = uri.queryParameters['id'];
                       storeId = idStr != null ? int.tryParse(idStr) : null;
                     }
+                    // 도어 출입 요청
+                    if (storeId != null) {
+                      final token = await AuthService.getToken();
+                      if (token != null && mounted) {
+                        final allowed = await ApiService.verifyDoorEntry(token, storeId, storeName);
+                        if (mounted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                allowed ? '🔓 입장이 허가됐습니다' : '입장이 거절됐습니다',
+                                style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w600),
+                              ),
+                              backgroundColor: allowed ? const Color(0xFF22C55E) : const Color(0xFFEF4444),
+                              behavior: SnackBarBehavior.floating,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                              duration: const Duration(seconds: 2),
+                            ),
+                          );
+                        }
+                      }
+                    }
                     widget.onSelectStore(storeName, storeId);
                   }
                 },
