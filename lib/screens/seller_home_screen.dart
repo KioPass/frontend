@@ -196,6 +196,7 @@ class _DashboardTabState extends State<DashboardTab> {
   SalesSummary? _salesSummary;
   List<RecentPayment> _recentPayments = [];
   List<TopProduct> _topProducts = [];
+  List<DoorEntryModel> _doorEntries = [];
 
   @override
   void initState() {
@@ -218,6 +219,7 @@ class _DashboardTabState extends State<DashboardTab> {
       ApiService.getSalesSummary(token: token, storeId: widget.storeId!),
       ApiService.getRecentPayments(token: token, storeId: widget.storeId!),
       ApiService.getTopProducts(token: token, storeId: widget.storeId!),
+      ApiService.getDoorEntries(token: token, storeId: widget.storeId!),
     ]);
     if (mounted) {
       setState(() {
@@ -227,6 +229,7 @@ class _DashboardTabState extends State<DashboardTab> {
         _salesSummary = results[1] as SalesSummary?;
         _recentPayments = results[2] as List<RecentPayment>;
         _topProducts = results[3] as List<TopProduct>;
+        _doorEntries = results[4] as List<DoorEntryModel>;
       });
     }
   }
@@ -406,6 +409,11 @@ class _DashboardTabState extends State<DashboardTab> {
               ],
             ),
           ),
+
+          const SizedBox(height: 16),
+
+          // 출입 현황
+          _DoorEntryCard(entries: _doorEntries),
 
           const SizedBox(height: 16),
 
@@ -1385,6 +1393,144 @@ class _PulseBadgeState extends State<PulseBadge> with SingleTickerProviderStateM
             Text(widget.label, style: TextStyle(fontFamily: 'Pretendard', color: const Color(0xFFEF4444), fontSize: widget.small ? 11 : 12, fontWeight: FontWeight.w700)),
           ],
         ),
+      ),
+    );
+  }
+}
+// ──────────────────────────────────────────
+// 출입 현황 카드
+// ──────────────────────────────────────────
+
+class _DoorEntryCard extends StatelessWidget {
+  final List<DoorEntryModel> entries;
+  const _DoorEntryCard({required this.entries});
+
+  @override
+  Widget build(BuildContext context) {
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: cs.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: cs.outline),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(20, 18, 20, 14),
+            child: Row(
+              children: [
+                Container(
+                  width: 32, height: 32,
+                  decoration: BoxDecoration(
+                    color: KColors.navy.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Icon(Icons.sensor_door_outlined, color: KColors.navy, size: 17),
+                ),
+                const SizedBox(width: 10),
+                Text('출입 현황', style: tt.titleSmall),
+                const Spacer(),
+                if (entries.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                    decoration: BoxDecoration(
+                      color: cs.onSurface.withValues(alpha: 0.06),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text('최근 ${entries.length}건', style: TextStyle(fontFamily: 'Pretendard', fontSize: 11, color: cs.onSurface.withValues(alpha: 0.5), fontWeight: FontWeight.w500)),
+                  ),
+              ],
+            ),
+          ),
+          Divider(height: 1, color: cs.outline),
+          if (entries.isEmpty)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 28),
+              child: Center(
+                child: Column(
+                  children: [
+                    Icon(Icons.sensor_door_outlined, size: 36, color: cs.onSurface.withValues(alpha: 0.15)),
+                    const SizedBox(height: 8),
+                    Text('출입 기록이 없어요', style: tt.bodySmall),
+                  ],
+                ),
+              ),
+            )
+          else
+            ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: entries.length,
+              separatorBuilder: (_, __) => Divider(height: 1, color: cs.outline, indent: 20, endIndent: 20),
+              itemBuilder: (_, i) {
+                final e = entries[i];
+                final isSuccess = e.isSuccess;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 36, height: 36,
+                        decoration: BoxDecoration(
+                          color: isSuccess
+                              ? const Color(0xFF22C55E).withValues(alpha: 0.1)
+                              : const Color(0xFFEF4444).withValues(alpha: 0.1),
+                          shape: BoxShape.circle,
+                        ),
+                        child: Icon(
+                          isSuccess ? Icons.lock_open_rounded : Icons.lock_rounded,
+                          size: 16,
+                          color: isSuccess ? const Color(0xFF16A34A) : const Color(0xFFDC2626),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(e.name, style: tt.labelLarge),
+                            const SizedBox(height: 2),
+                            Text(e.phone, style: tt.bodySmall),
+                          ],
+                        ),
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Text(e.time, style: tt.bodySmall),
+                          const SizedBox(height: 4),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                            decoration: BoxDecoration(
+                              color: isSuccess
+                                  ? const Color(0xFF22C55E).withValues(alpha: 0.1)
+                                  : const Color(0xFFEF4444).withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: Text(
+                              isSuccess ? '입장' : '거절',
+                              style: TextStyle(
+                                fontFamily: 'Pretendard',
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                                color: isSuccess ? const Color(0xFF16A34A) : const Color(0xFFDC2626),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          const SizedBox(height: 4),
+        ],
       ),
     );
   }

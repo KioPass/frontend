@@ -110,6 +110,29 @@ class TopProduct {
       );
 }
 
+class DoorEntryModel {
+  final String name;
+  final String phone;
+  final String email;
+  final String result;
+  final String time;
+  const DoorEntryModel({
+    required this.name,
+    required this.phone,
+    required this.email,
+    required this.result,
+    required this.time,
+  });
+  factory DoorEntryModel.fromJson(Map<String, dynamic> e) => DoorEntryModel(
+        name:   e['name']   as String? ?? '알 수 없음',
+        phone:  e['phone']  as String? ?? '-',
+        email:  e['email']  as String? ?? '-',
+        result: e['result'] as String? ?? '-',
+        time:   e['time']   as String? ?? '-',
+      );
+  bool get isSuccess => result == 'SUCCESS';
+}
+
 class ProductItem {
   final int id;
   final String barcode;
@@ -550,6 +573,21 @@ class ApiService {
         final list =
             (jsonDecode(res.body) as Map<String, dynamic>)['body'] as List;
         return list.map((e) => TopProduct.fromJson(e)).toList();
+      }
+    } catch (_) {}
+    return [];
+  }
+
+  static Future<List<DoorEntryModel>> getDoorEntries(
+      {required String token, required int storeId}) async {
+    try {
+      final res = await http.get(
+        Uri.parse('$kBaseUrl/api/door/entries/$storeId'),
+        headers: _headers(token),
+      );
+      if (res.statusCode == 200) {
+        final list = (jsonDecode(res.body) as Map<String, dynamic>)['body'] as List;
+        return list.map((e) => DoorEntryModel.fromJson(e)).toList();
       }
     } catch (_) {}
     return [];
