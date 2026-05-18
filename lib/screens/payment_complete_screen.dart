@@ -5,6 +5,7 @@ import '../app_theme.dart';
 import '../services/api_service.dart';
 import '../services/auth_service.dart';
 import 'payment_history_screen.dart';
+import 'main_screen.dart';
 class PaymentCartItem {
   final String name;
   final int quantity;
@@ -333,7 +334,10 @@ class _PaymentCompleteScreenState extends State<PaymentCompleteScreen>
                       width: double.infinity,
                       height: 54,
                       child: ElevatedButton.icon(
-                        onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+                        onPressed: () => Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(builder: (_) => const MainScreen()),
+                          (_) => false,
+                        ),
                         icon: const Icon(Icons.home_outlined, size: 18),
                         label: const Text('홈으로 가기', style: TextStyle(fontFamily: 'Pretendard', fontSize: 15, fontWeight: FontWeight.w700)),
                         style: ElevatedButton.styleFrom(

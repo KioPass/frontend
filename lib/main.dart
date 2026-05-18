@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 import 'firebase_options.dart';
 import 'screens/login_screen.dart';
 import 'screens/main_screen.dart';
+import 'screens/seller_pending_screen.dart';
 import 'app_theme.dart';
 import 'services/auth_service.dart';
+import 'services/api_service.dart';
 import 'services/fcm_service.dart';
 
 final themeNotifier = ValueNotifier<ThemeMode>(ThemeMode.system);
@@ -42,30 +44,42 @@ class _AuthGate extends StatefulWidget {
 }
 
 class _AuthGateState extends State<_AuthGate> {
-  late Future<bool> _loginFuture;
+  late Future<Widget> _routeFuture;
 
   @override
   void initState() {
     super.initState();
-    _loginFuture = AuthService.isLoggedIn();
+    _routeFuture = _determineRoute();
+  }
+
+  Future<Widget> _determineRoute() async {
+    final isLoggedIn = await AuthService.isLoggedIn();
+    if (!isLoggedIn) return const LoginScreen();
+
+    FcmService.initialize();
+
+    final token = await AuthService.getToken();
+    if (token != null) {
+      final info = await ApiService.getMyStore(token);
+      if (info != null && info.status == 'PENDING') {
+        return SellerPendingScreen(storeName: info.storeName);
+      }
+    }
+
+    return const MainScreen();
   }
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<bool>(
-      future: _loginFuture,
+    return FutureBuilder<Widget>(
+      future: _routeFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
           return const Scaffold(
             body: Center(child: CircularProgressIndicator()),
           );
         }
-        if (snapshot.data == true) {
-          // 로그인 상태면 FCM 초기화
-          FcmService.initialize();
-          return const MainScreen();
-        }
-        return const LoginScreen();
+        return snapshot.data ?? const LoginScreen();
       },
     );
   }

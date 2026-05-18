@@ -7,6 +7,7 @@ import '../app_theme.dart';
 import '../services/auth_service.dart';
 import '../services/api_service.dart';
 import 'main_screen.dart';
+import 'seller_pending_screen.dart';
 
 class SellerVerifyScreen extends StatefulWidget {
   const SellerVerifyScreen({super.key});
@@ -60,11 +61,24 @@ class _SellerVerifyScreenState extends State<SellerVerifyScreen> {
       );
       if (!mounted) return;
       if (success) {
+        // 사용자 정보 저장 (앱 재시작 시 로그인 상태 유지)
+        final token = await AuthService.getToken();
+        if (token != null) {
+          final profile = await ApiService.getUserProfile(token);
+          if (profile != null) {
+            await AuthService.saveUser(
+              role: profile.role,
+              name: profile.username,
+              email: profile.email,
+              token: token,
+            );
+          }
+        }
         if (!mounted) return;
-        showDialog(
-          context: context,
-          barrierDismissible: false,
-          builder: (_) => _PendingDialog(storeName: _nameController.text),
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => SellerPendingScreen(storeName: _nameController.text)),
+          (_) => false,
         );
       } else {
         _showError('서류 제출에 실패했어요. 다시 시도해주세요.');
@@ -601,59 +615,3 @@ class _SellerVerifyScreenState extends State<SellerVerifyScreen> {
   }
 }
 
-class _PendingDialog extends StatelessWidget {
-  final String storeName;
-  const _PendingDialog({required this.storeName});
-
-  @override
-  Widget build(BuildContext context) {
-    final cs = Theme.of(context).colorScheme;
-    final tt = Theme.of(context).textTheme;
-    return Dialog(
-      backgroundColor: Colors.transparent,
-      insetPadding: const EdgeInsets.symmetric(horizontal: 32),
-      child: Container(
-        padding: const EdgeInsets.all(28),
-        decoration: BoxDecoration(color: cs.surface, borderRadius: BorderRadius.circular(24)),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 64, height: 64,
-              decoration: BoxDecoration(color: const Color(0xFF22C55E).withValues(alpha: 0.1), shape: BoxShape.circle),
-              child: const Icon(Icons.check_circle_outline_rounded, color: Color(0xFF16A34A), size: 32),
-            ),
-            const SizedBox(height: 16),
-            Text('서류 제출 완료!', style: tt.titleMedium),
-            const SizedBox(height: 8),
-            Text(
-              '관리자 심사 후 영업일 1~2일 내\n판매자 계정으로 전환됩니다.',
-              style: tt.bodyMedium?.copyWith(height: 1.6),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 6),
-            Text('($storeName)', style: tt.bodySmall),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              height: 48,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // dialog
-                  Navigator.pop(context); // verify screen
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: KColors.primary,
-                  foregroundColor: Colors.white,
-                  elevation: 0,
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-                ),
-                child: const Text('확인', style: TextStyle(fontFamily: 'Pretendard', fontSize: 15, fontWeight: FontWeight.w700)),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

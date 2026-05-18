@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main_screen.dart';
+import 'seller_pending_screen.dart';
 import 'signup_screen.dart';
 import '../app_theme.dart';
 import '../services/auth_service.dart';
@@ -33,9 +34,19 @@ class _LoginScreenState extends State<LoginScreen> {
             email: profile.email,
             token: result.token,
           );
+          final storeInfo = await ApiService.getMyStore(result.token!);
+          // 승인 대기 중인 판매자 → 대기 화면
+          if (storeInfo != null && storeInfo.status == 'PENDING') {
+            if (!mounted) return;
+            FcmService.initialize();
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => SellerPendingScreen(storeName: storeInfo.storeName)),
+            );
+            return;
+          }
           // 판매자/관리자인 경우 storeId + storeName 저장
           if (profile.role == 'SELLER' || profile.role == 'ADMIN') {
-            final storeInfo = await ApiService.getMyStore(result.token!);
             if (storeInfo != null) {
               await AuthService.saveStoreId(storeInfo.storeId);
               await AuthService.saveStoreName(storeInfo.storeName);
@@ -53,7 +64,11 @@ class _LoginScreenState extends State<LoginScreen> {
         if (result.errorCode == 'no_server') {
           _showError('서버 주소가 설정되지 않았어요. 개발자에게 문의해주세요.');
         } else if (result.errorCode == '401') {
-          _showError('가입되지 않은 계정이에요. 먼저 회원가입을 해주세요.');
+          if (!mounted) return;
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const SignupScreen()),
+          );
         } else {
           _showError('로그인에 실패했어요. 다시 시도해주세요.');
         }

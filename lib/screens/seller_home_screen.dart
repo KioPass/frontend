@@ -491,12 +491,22 @@ class _InventoryTabState extends State<InventoryTab> {
   List<ProductItem> _products = [];
   bool _isLoading = false;
 
-  final List<String> _categories = ['음료', '식품', '간식', '기타'];
+  List<String> _categories = ['음료', '식품', '간식', '기타'];
+
+  Future<void> _loadCategories() async {
+    if (widget.storeId == null) return;
+    final token = await AuthService.getToken();
+    if (token == null) return;
+    final fromServer = await ApiService.getCategories(token: token, storeId: widget.storeId!);
+    final merged = {..._categories, ...fromServer}.toList();
+    if (mounted) setState(() => _categories = merged);
+  }
 
   @override
   void initState() {
     super.initState();
     _fetchProducts();
+    _loadCategories();
   }
 
   @override
@@ -695,22 +705,77 @@ class _InventoryTabState extends State<InventoryTab> {
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
-                      children: _categories.map((cat) {
-                        final selected = selectedCategory == cat;
-                        return GestureDetector(
-                          onTap: () => setDialogState(() => selectedCategory = cat),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 150),
+                      children: [
+                        ..._categories.map((cat) {
+                          final selected = selectedCategory == cat;
+                          return GestureDetector(
+                            onTap: () => setDialogState(() => selectedCategory = cat),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 150),
+                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: selected ? KColors.primary : cs.onSurface.withValues(alpha: 0.06),
+                                borderRadius: BorderRadius.circular(10),
+                                border: Border.all(color: selected ? KColors.primary : cs.outline),
+                              ),
+                              child: Text(cat, style: TextStyle(fontFamily: 'Pretendard', color: selected ? Colors.white : cs.onSurface.withValues(alpha: 0.6), fontSize: 13, fontWeight: FontWeight.w600)),
+                            ),
+                          );
+                        }),
+                        // 카테고리 추가 버튼
+                        GestureDetector(
+                          onTap: () async {
+                            final ctrl = TextEditingController();
+                            final newCat = await showDialog<String>(
+                              context: ctx,
+                              builder: (dialogCtx) => AlertDialog(
+                                backgroundColor: cs.surface,
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                                title: Text('카테고리 추가', style: TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w700, fontSize: 16, color: cs.onSurface)),
+                                content: TextField(
+                                  controller: ctrl,
+                                  autofocus: true,
+                                  style: TextStyle(fontFamily: 'Pretendard', color: cs.onSurface),
+                                  decoration: const InputDecoration(hintText: '카테고리 이름 입력'),
+                                  onSubmitted: (v) => Navigator.pop(dialogCtx, v.trim().isEmpty ? null : v.trim()),
+                                ),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(dialogCtx),
+                                    child: Text('취소', style: TextStyle(fontFamily: 'Pretendard', color: cs.onSurface.withValues(alpha: 0.5))),
+                                  ),
+                                  TextButton(
+                                    onPressed: () => Navigator.pop(dialogCtx, ctrl.text.trim().isEmpty ? null : ctrl.text.trim()),
+                                    child: const Text('추가', style: TextStyle(fontFamily: 'Pretendard', color: KColors.primary, fontWeight: FontWeight.w700)),
+                                  ),
+                                ],
+                              ),
+                            );
+                            if (newCat != null && !_categories.contains(newCat)) {
+                              setState(() => _categories = [..._categories, newCat]);
+                              setDialogState(() => selectedCategory = newCat);
+                            } else if (newCat != null) {
+                              setDialogState(() => selectedCategory = newCat);
+                            }
+                          },
+                          child: Container(
                             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                             decoration: BoxDecoration(
-                              color: selected ? KColors.primary : cs.onSurface.withValues(alpha: 0.06),
+                              color: cs.onSurface.withValues(alpha: 0.04),
                               borderRadius: BorderRadius.circular(10),
-                              border: Border.all(color: selected ? KColors.primary : cs.outline),
+                              border: Border.all(color: cs.outline, style: BorderStyle.solid),
                             ),
-                            child: Text(cat, style: TextStyle(fontFamily: 'Pretendard', color: selected ? Colors.white : cs.onSurface.withValues(alpha: 0.6), fontSize: 13, fontWeight: FontWeight.w600)),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Icon(Icons.add, size: 14, color: cs.onSurface.withValues(alpha: 0.5)),
+                                const SizedBox(width: 4),
+                                Text('추가', style: TextStyle(fontFamily: 'Pretendard', color: cs.onSurface.withValues(alpha: 0.5), fontSize: 13, fontWeight: FontWeight.w600)),
+                              ],
+                            ),
                           ),
-                        );
-                      }).toList(),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 24),
                     SizedBox(

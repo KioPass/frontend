@@ -449,6 +449,49 @@ class _StoreSelectSheetState extends State<_StoreSelectSheet> {
     }
   }
 
+  Future<void> _openQrScanner() async {
+    final result = await Navigator.push<String>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => const BarcodeScannerScreen(
+          scanType: ScanType.qr,
+          title: '매장 QR 스캔',
+        ),
+      ),
+    );
+    if (result != null && mounted) {
+      String storeName = result;
+      int? storeId;
+      if (result.contains('kiopass://store?')) {
+        final uri = Uri.parse(result);
+        storeName = uri.queryParameters['name'] ?? result;
+        final idStr = uri.queryParameters['id'];
+        storeId = idStr != null ? int.tryParse(idStr) : null;
+      }
+      if (storeId != null) {
+        final token = await AuthService.getToken();
+        if (token != null && mounted) {
+          final allowed = await ApiService.verifyDoorEntry(token, storeId, storeName);
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  allowed ? '🔓 입장이 허가됐습니다' : '입장이 거절됐습니다',
+                  style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w600),
+                ),
+                backgroundColor: allowed ? const Color(0xFF22C55E) : const Color(0xFFEF4444),
+                behavior: SnackBarBehavior.floating,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                duration: const Duration(seconds: 2),
+              ),
+            );
+          }
+        }
+      }
+      widget.onSelectStore(storeName, storeId);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final cs = Theme.of(context).colorScheme;
@@ -533,7 +576,7 @@ class _StoreSelectSheetState extends State<_StoreSelectSheet> {
                 itemBuilder: (_, i) {
                   final store = _stores[i];
                   return InkWell(
-                    onTap: () => widget.onSelectStore(store.storename, store.id),
+                    onTap: () => _openQrScanner(),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                       child: Row(
@@ -573,49 +616,7 @@ class _StoreSelectSheetState extends State<_StoreSelectSheet> {
               width: double.infinity,
               height: 52,
               child: ElevatedButton.icon(
-                onPressed: () async {
-                  final result = await Navigator.push<String>(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const BarcodeScannerScreen(
-                        scanType: ScanType.qr,
-                        title: '매장 QR 스캔',
-                      ),
-                    ),
-                  );
-                  if (result != null && mounted) {
-                    String storeName = result;
-                    int? storeId;
-                    if (result.contains('kiopass://store?')) {
-                      final uri = Uri.parse(result);
-                      storeName = uri.queryParameters['name'] ?? result;
-                      final idStr = uri.queryParameters['id'];
-                      storeId = idStr != null ? int.tryParse(idStr) : null;
-                    }
-                    // 도어 출입 요청
-                    if (storeId != null) {
-                      final token = await AuthService.getToken();
-                      if (token != null && mounted) {
-                        final allowed = await ApiService.verifyDoorEntry(token, storeId, storeName);
-                        if (mounted) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                allowed ? '🔓 입장이 허가됐습니다' : '입장이 거절됐습니다',
-                                style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w600),
-                              ),
-                              backgroundColor: allowed ? const Color(0xFF22C55E) : const Color(0xFFEF4444),
-                              behavior: SnackBarBehavior.floating,
-                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                              duration: const Duration(seconds: 2),
-                            ),
-                          );
-                        }
-                      }
-                    }
-                    widget.onSelectStore(storeName, storeId);
-                  }
-                },
+                onPressed: _openQrScanner,
                 icon: const Icon(Icons.qr_code_scanner_rounded, size: 18),
                 label: const Text('매장 QR 찍기', style: TextStyle(fontFamily: 'Pretendard', fontSize: 15, fontWeight: FontWeight.w700)),
                 style: ElevatedButton.styleFrom(

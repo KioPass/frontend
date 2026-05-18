@@ -173,7 +173,8 @@ class NearbyStore {
 class MyStoreInfo {
   final int storeId;
   final String storeName;
-  const MyStoreInfo({required this.storeId, required this.storeName});
+  final String status;
+  const MyStoreInfo({required this.storeId, required this.storeName, required this.status});
 }
 
 class SellerApplicationModel {
@@ -355,7 +356,8 @@ class ApiService {
         if (body == null) return null;
         return MyStoreInfo(
           storeId: (body['storeId'] as num).toInt(),
-          storeName: body['storeName'] as String,
+          storeName: body['storeName'] as String? ?? '',
+          status: body['status'] as String? ?? 'PENDING',
         );
       }
     } catch (_) {}
@@ -363,6 +365,21 @@ class ApiService {
   }
 
   // ── 상품 ───────────────────────────────────────────────────────────────
+  static Future<List<String>> getCategories(
+      {required String token, required int storeId}) async {
+    try {
+      final res = await http.get(
+        Uri.parse('$kBaseUrl/api/store/$storeId/products/categories'),
+        headers: _headers(token),
+      );
+      if (res.statusCode == 200) {
+        final body = (jsonDecode(res.body) as Map<String, dynamic>)['body'];
+        return (body as List).map((e) => e as String).toList();
+      }
+    } catch (_) {}
+    return [];
+  }
+
   static Future<List<ProductItem>> getProducts(
       {required String token, required int storeId}) async {
     try {
