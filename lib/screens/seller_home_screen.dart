@@ -10,6 +10,7 @@ import '../services/auth_service.dart';
 import '../services/api_service.dart';
 import 'sales_detail_screen.dart';
 import 'barcode_scanner_screen.dart';
+import 'door_entry_history_screen.dart';
 
 // ──────────────────────────────────────────
 // 판매자 홈 (단독 화면)
@@ -413,7 +414,13 @@ class _DashboardTabState extends State<DashboardTab> {
           const SizedBox(height: 16),
 
           // 출입 현황
-          _DoorEntryCard(entries: _doorEntries),
+          _DoorEntryCard(
+            entries: _doorEntries.take(5).toList(),
+            onMoreTap: _doorEntries.length > 5 ? () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => DoorEntryHistoryScreen(entries: _doorEntries)),
+            ) : null,
+          ),
 
           const SizedBox(height: 16),
 
@@ -587,6 +594,9 @@ class _InventoryTabState extends State<InventoryTab> {
     final priceCtrl = TextEditingController(text: isEdit ? product.price.toString() : '');
     final stockCtrl = TextEditingController(text: isEdit ? product.stock.toString() : '');
     String selectedCategory = isEdit ? product.category : '음료';
+    if (isEdit && !_categories.contains(product.category)) {
+      _categories = [..._categories, product.category];
+    }
     XFile? selectedImage;
 
     showDialog(
@@ -1403,7 +1413,8 @@ class _PulseBadgeState extends State<PulseBadge> with SingleTickerProviderStateM
 
 class _DoorEntryCard extends StatelessWidget {
   final List<DoorEntryModel> entries;
-  const _DoorEntryCard({required this.entries});
+  final VoidCallback? onMoreTap;
+  const _DoorEntryCard({required this.entries, this.onMoreTap});
 
   @override
   Widget build(BuildContext context) {
@@ -1530,6 +1541,26 @@ class _DoorEntryCard extends StatelessWidget {
               },
             ),
           const SizedBox(height: 4),
+          if (onMoreTap != null) ...[
+            Divider(height: 1, color: cs.outline),
+            InkWell(
+              onTap: onMoreTap,
+              borderRadius: const BorderRadius.vertical(bottom: Radius.circular(16)),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('전체 보기', style: TextStyle(fontFamily: 'Pretendard', fontSize: 13, fontWeight: FontWeight.w600, color: cs.onSurface.withValues(alpha: 0.5))),
+                      const SizedBox(width: 4),
+                      Icon(Icons.chevron_right, size: 16, color: cs.onSurface.withValues(alpha: 0.4)),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
         ],
       ),
     );
