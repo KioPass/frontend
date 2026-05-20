@@ -335,10 +335,11 @@ class _DashboardTabState extends State<DashboardTab> {
                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                   child: Row(
                     children: [
-                      Expanded(flex: 2, child: TableHeader('시간')),
-                      Expanded(flex: 3, child: TableHeader('결제자')),
-                      Expanded(flex: 3, child: TableHeader('수단')),
-                      Expanded(flex: 3, child: TableHeader('내역')),
+                      SizedBox(width: 52, child: TableHeader('시간')),
+                      const SizedBox(width: 12),
+                      SizedBox(width: 56, child: TableHeader('결제자')),
+                      const SizedBox(width: 12),
+                      Expanded(child: TableHeader('내역')),
                     ],
                   ),
                 ),
@@ -355,9 +356,11 @@ class _DashboardTabState extends State<DashboardTab> {
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         child: Row(
                           children: [
-                            Expanded(flex: 2, child: Text(p.time, style: tt.bodySmall)),
-                            Expanded(flex: 3, child: Text(p.buyerName, style: tt.labelLarge)),
-                            Expanded(flex: 4, child: Text(p.itemSummary, style: tt.bodySmall, overflow: TextOverflow.ellipsis)),
+                            SizedBox(width: 52, child: Text(p.time, style: tt.bodySmall)),
+                            const SizedBox(width: 12),
+                            SizedBox(width: 56, child: Text(p.buyerName, style: tt.labelLarge, overflow: TextOverflow.ellipsis)),
+                            const SizedBox(width: 12),
+                            Expanded(child: Text(p.itemSummary, style: tt.bodySmall, overflow: TextOverflow.ellipsis)),
                           ],
                         ),
                       ),
