@@ -593,7 +593,7 @@ class _InventoryTabState extends State<InventoryTab> {
     final barcodeCtrl = TextEditingController(text: isEdit ? product.barcode : (scannedBarcode ?? ''));
     final priceCtrl = TextEditingController(text: isEdit ? product.price.toString() : '');
     final stockCtrl = TextEditingController(text: isEdit ? product.stock.toString() : '');
-    String selectedCategory = isEdit ? product.category : '음료';
+    final categoryHolder = [isEdit ? product.category : '음료'];
     if (isEdit && !_categories.contains(product.category)) {
       _categories = [..._categories, product.category];
     }
@@ -725,9 +725,9 @@ class _InventoryTabState extends State<InventoryTab> {
                       runSpacing: 8,
                       children: [
                         ..._categories.map((cat) {
-                          final selected = selectedCategory == cat;
+                          final selected = categoryHolder[0] == cat;
                           return GestureDetector(
-                            onTap: () => setDialogState(() => selectedCategory = cat),
+                            onTap: () => setDialogState(() => categoryHolder[0] = cat),
                             child: AnimatedContainer(
                               duration: const Duration(milliseconds: 150),
                               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
@@ -771,9 +771,9 @@ class _InventoryTabState extends State<InventoryTab> {
                             );
                             if (newCat != null && !_categories.contains(newCat)) {
                               setState(() => _categories = [..._categories, newCat]);
-                              setDialogState(() => selectedCategory = newCat);
+                              setDialogState(() => categoryHolder[0] = newCat);
                             } else if (newCat != null) {
-                              setDialogState(() => selectedCategory = newCat);
+                              setDialogState(() => categoryHolder[0] = newCat);
                             }
                           },
                           child: Container(
@@ -805,7 +805,7 @@ class _InventoryTabState extends State<InventoryTab> {
                           final data = {
                             'name': nameCtrl.text,
                             'barcode': barcodeCtrl.text,
-                            'category': selectedCategory,
+                            'category': categoryHolder[0],
                             'price': int.tryParse(priceCtrl.text) ?? 0,
                             'stock': int.tryParse(stockCtrl.text) ?? 0,
                           };
