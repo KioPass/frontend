@@ -550,6 +550,12 @@ class _InventoryTabState extends State<InventoryTab> {
           productId: saved.id,
           imagePath: imagePath);
     }
+    if (saved != null && existing != null && mounted) {
+      setState(() {
+        final idx = _products.indexWhere((p) => p.id == saved.id);
+        if (idx >= 0) _products[idx] = saved;
+      });
+    }
     _fetchProducts();
   }
 
