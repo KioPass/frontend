@@ -110,6 +110,20 @@ class TopProduct {
       );
 }
 
+class BlacklistModel {
+  final int id;
+  final String email;
+  final String reason;
+  final String createdAt;
+  const BlacklistModel({required this.id, required this.email, required this.reason, required this.createdAt});
+  factory BlacklistModel.fromJson(Map<String, dynamic> e) => BlacklistModel(
+    id: (e['id'] as num).toInt(),
+    email: e['email'] as String? ?? '',
+    reason: e['reason'] as String? ?? '',
+    createdAt: e['createdAt'] as String? ?? '',
+  );
+}
+
 class DoorEntryModel {
   final String name;
   final String phone;
@@ -668,6 +682,37 @@ class ApiService {
   }
 
   // ── 판매자 신청 관리 (관리자) ────────────────────────────────────────
+  static Future<List<BlacklistModel>> getBlacklist(String token) async {
+    try {
+      final res = await http.get(Uri.parse('$kBaseUrl/api/admin/blacklist'), headers: _headers(token));
+      if (res.statusCode == 200) {
+        final list = (jsonDecode(res.body) as Map<String, dynamic>)['body'] as List;
+        return list.map((e) => BlacklistModel.fromJson(e as Map<String, dynamic>)).toList();
+      }
+    } catch (_) {}
+    return [];
+  }
+
+  static Future<bool> addBlacklist(String token, String email, String reason) async {
+    try {
+      final res = await http.post(
+        Uri.parse('$kBaseUrl/api/admin/blacklist'),
+        headers: _headers(token),
+        body: jsonEncode({'email': email, 'reason': reason}),
+      );
+      return res.statusCode == 200;
+    } catch (_) {}
+    return false;
+  }
+
+  static Future<bool> removeBlacklist(String token, int id) async {
+    try {
+      final res = await http.delete(Uri.parse('$kBaseUrl/api/admin/blacklist/$id'), headers: _headers(token));
+      return res.statusCode == 200;
+    } catch (_) {}
+    return false;
+  }
+
   static Future<List<SellerApplicationModel>> getSellerApplications(String token) async {
     try {
       final res = await http.get(

@@ -15,13 +15,14 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
   late TabController _tabController;
   List<InquiryModel> _allInquiries = [];
   List<SellerApplicationModel> _applications = [];
+  List<BlacklistModel> _blacklist = [];
   bool _loading = true;
   String? _token;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
     _tabController.addListener(() => setState(() {}));
     _loadAll();
   }
@@ -41,10 +42,12 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
     final results = await Future.wait([
       ApiService.getAdminInquiries(_token!),
       ApiService.getSellerApplications(_token!),
+      ApiService.getBlacklist(_token!),
     ]);
     if (mounted) setState(() {
       _allInquiries = results[0] as List<InquiryModel>;
       _applications = results[1] as List<SellerApplicationModel>;
+      _blacklist = results[2] as List<BlacklistModel>;
       _loading = false;
     });
   }
@@ -161,6 +164,22 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
                       ],
                     ),
                   ),
+                  Tab(
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Text('블랙리스트'),
+                        if (_blacklist.isNotEmpty) ...[
+                          const SizedBox(width: 2),
+                          Container(
+                            width: 14, height: 14,
+                            decoration: const BoxDecoration(color: Color(0xFFEF4444), shape: BoxShape.circle),
+                            child: Center(child: Text('${_blacklist.length}', style: const TextStyle(fontFamily: 'Pretendard', color: Colors.white, fontSize: 8, fontWeight: FontWeight.w900))),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -170,7 +189,9 @@ class _AdminScreenState extends State<AdminScreen> with SingleTickerProviderStat
             Expanded(
               child: _loading
                   ? const Center(child: CircularProgressIndicator())
-                  : _tabController.index == 3
+                  : _tabController.index == 4
+                      ? _buildBlacklistTab()
+                      : _tabController.index == 3
                       ? _buildApplicationsTab()
                       : _filteredInquiries.isEmpty
                           ? _buildEmpty(context)
@@ -755,6 +776,149 @@ class _DocViewerDialog extends StatelessWidget {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildBlacklistTab() {
+    final cs = Theme.of(context).colorScheme;
+    final tt = Theme.of(context).textTheme;
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+          child: SizedBox(
+            width: double.infinity,
+            height: 48,
+            child: ElevatedButton.icon(
+              onPressed: () => _showAddBlacklistDialog(),
+              icon: const Icon(Icons.add, size: 18),
+              label: const Text('이메일 차단 추가', style: TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w700)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xFFEF4444),
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: _blacklist.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(Icons.block_outlined, size: 48, color: cs.onSurface.withValues(alpha: 0.15)),
+                      const SizedBox(height: 12),
+                      Text('차단된 사용자가 없어요', style: tt.bodySmall),
+                    ],
+                  ),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
+                  itemCount: _blacklist.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 8),
+                  itemBuilder: (_, i) {
+                    final b = _blacklist[i];
+                    return Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: cs.surface,
+                        borderRadius: BorderRadius.circular(14),
+                        border: Border.all(color: const Color(0xFFEF4444).withValues(alpha: 0.2)),
+                      ),
+                      child: Row(
+                        children: [
+                          Container(
+                            width: 36, height: 36,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFEF4444).withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Icon(Icons.block, color: Color(0xFFEF4444), size: 18),
+                          ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(b.email, style: tt.labelLarge),
+                                if (b.reason.isNotEmpty) ...[
+                                  const SizedBox(height: 2),
+                                  Text(b.reason, style: tt.bodySmall),
+                                ],
+                                const SizedBox(height: 2),
+                                Text(b.createdAt, style: tt.bodySmall?.copyWith(color: cs.onSurface.withValues(alpha: 0.35))),
+                              ],
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () async {
+                              if (_token == null) return;
+                              final ok = await ApiService.removeBlacklist(_token!, b.id);
+                              if (ok && mounted) {
+                                setState(() => _blacklist.removeWhere((x) => x.id == b.id));
+                              }
+                            },
+                            icon: const Icon(Icons.delete_outline, color: Color(0xFFEF4444), size: 20),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
+        ),
+      ],
+    );
+  }
+
+  void _showAddBlacklistDialog() {
+    final emailCtrl = TextEditingController();
+    final reasonCtrl = TextEditingController();
+    final cs = Theme.of(context).colorScheme;
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        backgroundColor: cs.surface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: const Text('사용자 차단', style: TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w700, fontSize: 16)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: emailCtrl,
+              style: const TextStyle(fontFamily: 'Pretendard'),
+              decoration: const InputDecoration(hintText: '차단할 이메일 입력'),
+              keyboardType: TextInputType.emailAddress,
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: reasonCtrl,
+              style: const TextStyle(fontFamily: 'Pretendard'),
+              decoration: const InputDecoration(hintText: '차단 사유 (선택)'),
+            ),
+          ],
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: Text('취소', style: TextStyle(fontFamily: 'Pretendard', color: cs.onSurface.withValues(alpha: 0.5))),
+          ),
+          TextButton(
+            onPressed: () async {
+              if (emailCtrl.text.trim().isEmpty || _token == null) return;
+              final ok = await ApiService.addBlacklist(_token!, emailCtrl.text.trim(), reasonCtrl.text.trim());
+              if (ok && mounted) {
+                Navigator.pop(ctx);
+                _loadAll();
+              }
+            },
+            child: const Text('차단', style: TextStyle(fontFamily: 'Pretendard', color: Color(0xFFEF4444), fontWeight: FontWeight.w700)),
+          ),
+        ],
       ),
     );
   }
