@@ -473,18 +473,57 @@ class _StoreSelectSheetState extends State<_StoreSelectSheet> {
         if (token != null && mounted) {
           final allowed = await ApiService.verifyDoorEntry(token, storeId, storeName);
           if (mounted) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  allowed ? '🔓 입장이 허가됐습니다' : '입장이 거절됐습니다',
-                  style: const TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w600),
+            if (allowed) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: const Text('🔓 입장이 허가됐습니다', style: TextStyle(fontFamily: 'Pretendard', fontWeight: FontWeight.w600)),
+                  backgroundColor: const Color(0xFF22C55E),
+                  behavior: SnackBarBehavior.floating,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  duration: const Duration(seconds: 2),
                 ),
-                backgroundColor: allowed ? const Color(0xFF22C55E) : const Color(0xFFEF4444),
-                behavior: SnackBarBehavior.floating,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                duration: const Duration(seconds: 2),
-              ),
-            );
+              );
+            } else {
+              final cs = Theme.of(context).colorScheme;
+              showDialog(
+                context: context,
+                builder: (_) => AlertDialog(
+                  backgroundColor: cs.surface,
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const SizedBox(height: 8),
+                      Container(
+                        width: 56, height: 56,
+                        decoration: BoxDecoration(color: const Color(0xFFEF4444).withValues(alpha: 0.1), shape: BoxShape.circle),
+                        child: const Icon(Icons.lock_rounded, color: Color(0xFFEF4444), size: 26),
+                      ),
+                      const SizedBox(height: 16),
+                      const Text('입장이 거절되었습니다', style: TextStyle(fontFamily: 'Pretendard', fontSize: 17, fontWeight: FontWeight.w700)),
+                      const SizedBox(height: 8),
+                      const Text('관리자에게 문의해주세요', style: TextStyle(fontFamily: 'Pretendard', fontSize: 14, color: Color(0xFF8B95A1))),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                        width: double.infinity,
+                        height: 46,
+                        child: ElevatedButton(
+                          onPressed: () => Navigator.pop(_),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFFEF4444),
+                            foregroundColor: Colors.white,
+                            elevation: 0,
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          ),
+                          child: const Text('확인', style: TextStyle(fontFamily: 'Pretendard', fontSize: 15, fontWeight: FontWeight.w700)),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+              return;
+            }
           }
         }
       }
