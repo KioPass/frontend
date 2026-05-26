@@ -487,7 +487,7 @@ class _StoreSelectSheetState extends State<_StoreSelectSheet> {
               final cs = Theme.of(context).colorScheme;
               showDialog(
                 context: context,
-                builder: (_) => AlertDialog(
+                builder: (dialogCtx) => AlertDialog(
                   backgroundColor: cs.surface,
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
                   content: Column(
@@ -508,7 +508,7 @@ class _StoreSelectSheetState extends State<_StoreSelectSheet> {
                         width: double.infinity,
                         height: 46,
                         child: ElevatedButton(
-                          onPressed: () => Navigator.pop(_),
+                          onPressed: () => Navigator.pop(dialogCtx),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFEF4444),
                             foregroundColor: Colors.white,
