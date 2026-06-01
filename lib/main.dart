@@ -43,16 +43,32 @@ class _AuthGate extends StatefulWidget {
   State<_AuthGate> createState() => _AuthGateState();
 }
 
-class _AuthGateState extends State<_AuthGate> {
+class _AuthGateState extends State<_AuthGate> with SingleTickerProviderStateMixin {
   late Future<Widget> _routeFuture;
+  late AnimationController _fadeCtrl;
+  late Animation<double> _fadeAnim;
 
   @override
   void initState() {
     super.initState();
+    _fadeCtrl = AnimationController(vsync: this, duration: const Duration(milliseconds: 600));
+    _fadeAnim = CurvedAnimation(parent: _fadeCtrl, curve: Curves.easeOut);
+    _fadeCtrl.forward();
     _routeFuture = _determineRoute();
   }
 
+  @override
+  void dispose() {
+    _fadeCtrl.dispose();
+    super.dispose();
+  }
+
   Future<Widget> _determineRoute() async {
+    final results = await Future.wait([_resolveRoute(), Future.delayed(const Duration(milliseconds: 1500))]);
+    return results[0] as Widget;
+  }
+
+  Future<Widget> _resolveRoute() async {
     final isLoggedIn = await AuthService.isLoggedIn();
     if (!isLoggedIn) return const LoginScreen();
 
@@ -75,8 +91,14 @@ class _AuthGateState extends State<_AuthGate> {
       future: _routeFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
-          return const Scaffold(
-            body: Center(child: CircularProgressIndicator()),
+          return Scaffold(
+            backgroundColor: const Color(0xFF122A42),
+            body: FadeTransition(
+              opacity: _fadeAnim,
+              child: Center(
+                child: Image.asset('assets/images/logo.png', width: 120, height: 120),
+              ),
+            ),
           );
         }
         return snapshot.data ?? const LoginScreen();
