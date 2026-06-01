@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
+import 'web_auth_helper.dart';
 import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 
@@ -347,7 +347,7 @@ class ApiService {
       return const OAuthResult(status: 'error', errorCode: 'no_server');
     }
     try {
-      final result = await FlutterWebAuth2.authenticate(
+      final result = await WebAuthHelper.authenticate(
         url: '$kBaseUrl/user/auth/$provider?target=$target',
         callbackUrlScheme: _callbackScheme,
       );

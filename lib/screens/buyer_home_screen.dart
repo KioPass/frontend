@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
+import '../services/web_auth_helper.dart';
 import '../app_theme.dart';
 import 'dart:ui';
 import 'payment_complete_screen.dart';
@@ -262,7 +262,7 @@ class _BuyerHomeScreenState extends State<BuyerHomeScreen> {
     );
 
     try {
-      final result = await FlutterWebAuth2.authenticate(
+      final result = await WebAuthHelper.authenticate(
         url: checkoutInfo.checkoutUrl,
         callbackUrlScheme: 'myapp',
       );
@@ -1559,7 +1559,7 @@ class _BuyerProductGridState extends State<BuyerProductGrid> {
     );
 
     try {
-      final result = await FlutterWebAuth2.authenticate(
+      final result = await WebAuthHelper.authenticate(
         url: checkoutInfo.checkoutUrl,
         callbackUrlScheme: 'myapp',
       );
