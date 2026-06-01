@@ -8,7 +8,7 @@ class WebAuthHelper {
   }) async {
     final appLinks = AppLinks();
 
-    final callbackFuture = appLinks.allUriLinkStream
+    final callbackFuture = appLinks.uriLinkStream
         .firstWhere((uri) => uri.scheme == callbackUrlScheme)
         .timeout(const Duration(minutes: 5));
 
