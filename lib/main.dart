@@ -93,7 +93,7 @@ class _AuthGateState extends State<_AuthGate> with SingleTickerProviderStateMixi
         if (snapshot.connectionState != ConnectionState.done) {
           final isDark = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
           return Scaffold(
-            backgroundColor: isDark ? const Color(0xFF122A42) : Colors.white,
+            backgroundColor: isDark ? const Color(0xFF122A42) : const Color(0xFFEEEEEC),
             body: FadeTransition(
               opacity: _fadeAnim,
               child: Center(
