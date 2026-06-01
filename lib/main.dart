@@ -91,12 +91,16 @@ class _AuthGateState extends State<_AuthGate> with SingleTickerProviderStateMixi
       future: _routeFuture,
       builder: (context, snapshot) {
         if (snapshot.connectionState != ConnectionState.done) {
+          final isDark = WidgetsBinding.instance.platformDispatcher.platformBrightness == Brightness.dark;
           return Scaffold(
-            backgroundColor: const Color(0xFF122A42),
+            backgroundColor: isDark ? const Color(0xFF122A42) : Colors.white,
             body: FadeTransition(
               opacity: _fadeAnim,
               child: Center(
-                child: Image.asset('assets/images/logo.png', width: 120, height: 120),
+                child: Image.asset(
+                  isDark ? 'assets/images/logo.png' : 'assets/images/logo2.png',
+                  width: 120, height: 120,
+                ),
               ),
             ),
           );
